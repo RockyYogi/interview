@@ -1,22 +1,29 @@
+Multipackage with OS condition
+
 ---
 - hosts: webservers
   become: true
-  tasks:
-  - name: Installation of packages on Redhat family
-    when: ansible_os_family = "Redhat"
-    yum: path={{item}} state=present
-    with_items:
-    - vim
-    - zip
-    - curl
-    - nginx
 
-  - name: Installation of packages on Debain family
-    when: ansible_os_family = "Debain"
-    apt: path={{item}} state=present
-    with_items:
-    - vim
-    - zip
-    - curl
-    - nginx
+  tasks:
+    - name: Install packages on RedHat family
+      when: ansible_os_family == "RedHat"
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - vim
+        - zip
+        - curl
+        - nginx
+
+    - name: Install packages on Debian family
+      when: ansible_os_family == "Debian"
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - vim
+        - zip
+        - curl
+        - nginx
    
