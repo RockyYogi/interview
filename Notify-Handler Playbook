@@ -1,0 +1,21 @@
+Ansible Notify Handler playbook
+
+
+---
+- hosts: webservers
+  become: true
+
+  tasks:
+    - name: Install Apache HTTP Server
+      yum:
+        name: httpd
+        state: latest
+      notify:
+        - restart_httpd
+
+  handlers:
+    - name: restart_httpd
+      service:
+        name: httpd
+        state: restarted
+        enabled: true 
